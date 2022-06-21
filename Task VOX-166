@@ -1,0 +1,29 @@
+https://wildix.atlassian.net/browse/VOX-166
+
+n this ticket we want to create alerts for kamailio memory usage on sbc nodes.
+
+
+es_host: kibana
+es_port: 9200
+name:Could not allocate 
+type: any
+index: pbxes-20*
+
+filter:
+  - query:
+      query_string:
+        query: program:kamailio and 'message: "could not allocate"'
+
+realert:
+  hours: 1
+query_key: host
+alert:
+- "email"
+alert_subject: "[warn] Could not allocate memory {0} {1}"
+alert_subject_args:
+- host
+- version.complete
+
+email:
+- "noc+elastalert+pbx@wildix.com"
+
